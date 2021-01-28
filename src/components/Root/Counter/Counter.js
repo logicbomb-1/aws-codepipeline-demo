@@ -47,6 +47,7 @@ const Counter = () => {
         <Button onClick={() => dispatch(-1)}>-1</Button>
         <Button onClick={() => dispatch(1)}>+1</Button>
         <Button onClick={() => dispatch(2)}>+2</Button>
+        <Button onClick={() => dispatch(5)}>+5</Button>
       </ButtonRow>
     </div>
   );
