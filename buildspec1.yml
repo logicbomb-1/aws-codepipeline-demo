@@ -18,7 +18,7 @@ phases:
       - cat analysis.json
   build:
     commands:
-      - echo Building Project
+      - echo Building Project..
       - echo Finished Building
 
 cache:
