@@ -12,9 +12,9 @@ phases:
       - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
   pre_build:
     commands:
-      - sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
+      - sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=$Project -Dsonar.sources=src -Dsonar.host.url=$HOST -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
       - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=logicbomb-1_aws-codepipeline-demo > analysis.json
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project > analysis.json
       - cat analysis.json
   build:
     commands:
