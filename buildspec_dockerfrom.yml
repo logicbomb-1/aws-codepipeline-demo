@@ -18,7 +18,8 @@ phases:
     build:
         commands:
         - echo "Build started"
-        - echo "Scanning with Hadolint..."        
+        - echo "Scanning with Hadolint..."      
+        - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
         - docker run --rm --name dockercheck -v /${PRO}/Dockerfiletest:/Dockerfiletest logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
         - cat test.txt
     post_build:
