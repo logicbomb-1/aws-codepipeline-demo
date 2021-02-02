@@ -19,7 +19,7 @@ phases:
         commands:
         - echo "Build started"
         - echo "Scanning with Hadolint..."        
-        - docker run -it --rm --name dockercheck -v /${PRO}/Dockerfiletest:/Dockerfiletest logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
+        - docker run --rm --name dockercheck -v /${PRO}/Dockerfiletest:/Dockerfiletest logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
         - cat test.txt
     post_build:
         commands:
