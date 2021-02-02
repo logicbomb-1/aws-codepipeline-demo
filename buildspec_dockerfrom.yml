@@ -14,13 +14,12 @@ phases:
         - pwd
         - echo "Pulling the hadolint docker image"
         - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
-        - docker pull hadolint/hadolint:v1.16.2
         - git clone ${PROJECT}
     build:
         commands:
         - echo "Build started"
         - echo "Scanning with Hadolint..."        
-        - result=`docker run -it --rm --name dockercheck -v /${PROJECT}/Dockerfiletest:/Dockerfiletest logicbomb1/docker-trusted-image-check:latest python check_from_docker.py`
+        - result=`docker run -it --rm --name dockercheck -v /${PRO}/Dockerfiletest:/Dockerfiletest logicbomb1/docker-trusted-image-check:latest python check_from_docker.py`
     post_build:
         commands:
         - echo "Lint Results:"
