@@ -24,7 +24,7 @@ phases:
         - cat test.txt
     post_build:
         commands:
-        - echo "Lint Results:"
+        - echo "Lint Result:"
         - cat test.txt
         - echo test.txt
         - echo Build completed
