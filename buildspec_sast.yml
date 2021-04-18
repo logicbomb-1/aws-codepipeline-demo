@@ -1,26 +1,48 @@
+#version: 0.2
+#phases:
+#  install:
+#    runtime-versions:
+#      php: 7.3
+#      java: corretto11
+      #nodejs: 12
+ #   commands:
+ #     - apt-get update
+ #     - apt-get install -y jq
+ #     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+ #     - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
+ #     - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+ # pre_build:
+ #   commands:
+ #     - sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
+ #     - sleep 5
+ #     - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > analysis.json
+ #     - cat analysis.json
+##Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+##SPDX-License-Identifier: MIT-0
 version: 0.2
 phases:
   install:
     runtime-versions:
       php: 7.3
       java: corretto11
-      #nodejs: 12
     commands:
-      - apt-get update
-      - apt-get install -y jq
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
-      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
-      - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+      - echo "in the install phase"
+    finally:
+      - echo This always runs even if the login command fails 
   pre_build:
     commands:
-      - sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
-      - sleep 5
-      - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > analysis.json
-      - cat analysis.json
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+      - unzip sonar-scanner-cli-4.4.0.2170-linux.zip
+      - mv sonar-scanner-4.4.0.2170-linux /opt/sonar-scanner
+      - chmod -R 775 /opt/sonar-scanner
+      - echo "stage pre_build completed"
   build:
     commands:
-      - cat analysis.json
-      - echo Finished Building
+      - cd $CODEBUILD_SRC_DIR
+      - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.sources=. -Dproject.settings=sonar-project.properties -Dsonar.host.url=$SonarQube_URL -Dsonar.login=$SonarQube_Access_Token > sonarqube_scanreport.json
+      - echo "build stage completed" 
+      - cat sonarqube_scanreport.json
+      - echo "Finished Building"
 cache:
   paths:
     - "node_modules/**/*"
