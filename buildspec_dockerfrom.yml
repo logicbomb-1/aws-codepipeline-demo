@@ -9,9 +9,6 @@ phases:
         - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         - apt install docker-ce -y
         - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-        - echo "Switching to the application directory"
-        - cd $CODEBUILD_SRC_DIR_AppSource
-        - pwd
         - echo "Pulling the hadolint docker image"
         - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
         - git clone ${SOURCE_REPO_URL}
@@ -20,7 +17,7 @@ phases:
         - echo "Build started"
         - echo "Scanning with Hadolint..."      
         - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-        - docker run --rm --name dockercheck -v /aws-codepipeline-demo/Dockerfile:/Dockerfile logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
+        - docker run --rm --name dockercheck -v /aws-codepipeline-demo/Dockerfiletest.txt:/Dockerfile logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
         - cat test.txt
     post_build:
         commands:
