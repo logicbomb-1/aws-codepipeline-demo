@@ -21,7 +21,7 @@ phases:
   post_build:
     commands:
       - echo $high_risk_dependency
-      - cat dependency-check-report.json
+      #- cat dependency-check-report.json
 artifacts:
   type: zip
   files: '**/*'
