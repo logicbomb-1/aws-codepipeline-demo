@@ -39,8 +39,9 @@ phases:
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR
-      - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960 > sonarqube_scanreport.json
+      - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
       - echo "build stage completed" 
+      - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
       - cat sonarqube_scanreport.json
       - echo "Finished Building"
 cache:
