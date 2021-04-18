@@ -14,7 +14,7 @@ phases:
         - pwd
         - echo "Pulling the hadolint docker image"
         - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
-        - git clone ${PROJECT}
+        - git clone ${SOURCE_REPO_URL}
     build:
         commands:
         - echo "Build started"
