@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+    pre_build:
+        commands:
+        - apt update
+        - apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+        - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - apt install docker-ce -y
+        - echo "Copying hadolint.yml to the application directory"
+        - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+        - cp hadolint.yml $CODEBUILD_SRC_DIR_AppSource/hadolint.yml
+        - echo "Switching to the application directory"
+        - cd $CODEBUILD_SRC_DIR_AppSource
+        - pwd
+        - echo "Pulling the hadolint docker image"
+        - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
+        - docker pull hadolint/hadolint:v1.16.2
+        - git clone ${SOURCE_REPO_URL}
+        - cd ${SOURCE_REPO_NAME}
+    build:
+        commands:
+        - echo "Build started"
+        - echo "Scanning with Hadolint...."        
+        - result=`docker run --rm -i -v ${PWD}/.hadolint.yml:/.hadolint.yaml hadolint/hadolint:v1.16.2 hadolint -f json - < Dockerfile`
+    post_build:
+        commands:
+        - echo "Lint Results:"
+        - echo $result | jq . 
+        - echo Build completed
