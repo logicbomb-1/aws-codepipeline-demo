@@ -17,7 +17,7 @@ phases:
         - echo "Build started"
         - echo "Scanning with Hadolint..."      
         - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-        - docker run --rm --name dockercheck -v /aws-codepipeline-demo/Dockerfiletest.txt:/Dockerfile logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
+        - docker run --rm --name dockercheck -v /aws-codepipeline-demo/Dockerfile:/tmp/Dockerfile.txt logicbomb1/docker-trusted-image-check:latest python check_from_docker.py > test.txt
         - cat test.txt
     post_build:
         commands:
