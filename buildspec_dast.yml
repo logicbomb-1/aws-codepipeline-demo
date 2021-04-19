@@ -17,7 +17,7 @@ phases:
         - docker run -i owasp/zap2docker-stable zap-cli quick-scan --self-contained --start-options '-config api.disablekey=true' http://testphp.vulnweb.com/ > result.txt       
     post_build:
         commands:
-        - echo "Lint Results:"
+        - echo "DAST Results"
         - cat result.txt
         #- echo $result | jq . 
         - echo Build completed
