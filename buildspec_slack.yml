@@ -1,0 +1,30 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      php: 7.3
+      java: corretto11
+    commands:
+      - echo "in the install phase"
+    finally:
+      - echo This always runs even if the login command fails 
+  pre_build:
+    commands:
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+      - unzip sonar-scanner-cli-4.4.0.2170-linux.zip
+      - mv sonar-scanner-4.4.0.2170-linux /opt/sonar-scanner
+      - chmod -R 775 /opt/sonar-scanner
+      - echo "stage pre_build completed"
+  build:
+    commands:
+      - cd $CODEBUILD_SRC_DIR
+      - echo $CODEBUILD_SRC_DIR
+      - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
+      - echo "build stage completed" 
+      - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
+      - cat sonarqube_scanreport.json
+      - aws lambda invoke --function-name devsecops_lambda --payload file://sonarqube_scanreport.json out --log-type Tail
+      - echo "Finished Building"
+cache:
+  paths:
+    - "node_modules/**/*"
