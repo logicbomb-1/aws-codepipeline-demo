@@ -24,7 +24,7 @@ phases:
       - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
       - cat sonarqube_scanreport.json
       - aws lambda invoke --function-name devsecops_lambda --payload file://sonarqube_scanreport.json out --log-type Tail
-      - echo "Finished Building"
+      - echo "Finished Building.."
 cache:
   paths:
     - "node_modules/**/*"
