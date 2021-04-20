@@ -14,7 +14,6 @@ phases:
         commands:
         - echo "Build started"
         - echo "Scanning with OWASP..." 
-        - aws lambda invoke --function-name devsecops_lambda out --log-type Tail
         - docker run -i owasp/zap2docker-stable zap-cli quick-scan --self-contained --start-options '-config api.disablekey=true' http://testphp.vulnweb.com/ > result.txt       
     post_build:
         commands:
