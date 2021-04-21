@@ -24,7 +24,7 @@ phases:
       - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
       - echo "hello" > t.txt
       - cat sonarqube_scanreport.json
-      - aws lambda invoke --invocation-type RequestResponse --function-name devsecops_lambda --payload file://t.txt --cli-binary-format raw-in-base64-out #out --log-type Tail
+      - aws lambda invoke --invocation-type RequestResponse --function-name devsecops_lambda --payload file://t.txt --cli-binary-format raw-in-base64-out out --log-type Tail
       - echo "Finished Building.."
 cache:
   paths:
