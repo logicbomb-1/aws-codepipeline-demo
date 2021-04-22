@@ -25,7 +25,7 @@ phases:
       - cat sonarqube_scanreport.json
       - aws lambda invoke --function-name devsecops_lambda --cli-binary-format raw-in-base64-out --payload file://sonarqube_scanreport.json sonarqube_scan_report.json
       #- curl -F file=@sonarqube_scanreport.json -F "initial_comment=Sonarqube Report" -F channels=C01D3F7MEAZ -H "Authorization:Bearer xoxb-370436646775-1983020197670-JIArhBTeHcUzBsMft5REXjX2" https://slack.com/api/files.upload
-      - echo "Finished Building.."
+      - echo "Finished Building..."
 cache:
   paths:
     - "node_modules/**/*"
