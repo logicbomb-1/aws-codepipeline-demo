@@ -23,7 +23,7 @@ phases:
       - echo "build stage completed" 
       - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
       - cat sonarqube_scanreport.json
-      - curl -F file=@sonarqube_scanreport.json -F "initial_comment=Sonarqube Report" -F channels=C01D3F7MEAZ -H "Authorization: Bearer xoxb-370436646775-1995632686308-jdA8juDOsmt9p2FjkhELoXab" https://slack.com/api/files.upload
+      - curl -F file=@sonarqube_scanreport.json -F "initial_comment=Sonarqube Report" -F channels=C01D3F7MEAZ -H "Authorization:Bearer xoxb-370436646775-1995632686308-jdA8juDOsmt9p2FjkhELoXab" https://slack.com/api/files.upload
       - echo "Finished Building.."
 cache:
   paths:
