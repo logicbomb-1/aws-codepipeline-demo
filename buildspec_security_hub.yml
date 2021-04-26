@@ -10,20 +10,20 @@ phases:
       - echo This always runs even if the login command fails 
   pre_build:
     commands:
-      #- wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
-      #- unzip sonar-scanner-cli-4.4.0.2170-linux.zip
-      #- mv sonar-scanner-4.4.0.2170-linux /opt/sonar-scanner
-      #- chmod -R 775 /opt/sonar-scanner
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+      - unzip sonar-scanner-cli-4.4.0.2170-linux.zip
+      - mv sonar-scanner-4.4.0.2170-linux /opt/sonar-scanner
+      - chmod -R 775 /opt/sonar-scanner
       - echo "stage pre_build completed"
   build:
     commands:
-      #- cd $CODEBUILD_SRC_DIR
-      #- echo $CODEBUILD_SRC_DIR
-      #- /opt/sonar-scanner/bin/sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
-      #- echo "build stage completed" 
-      #- curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
-      #- cat sonarqube_scanreport.json    
-      #- aws lambda invoke --function-name devsecops_lambda --cli-binary-format raw-in-base64-out --payload file://sonarqube_scanreport.json sonarqube_scan_report.json    
+      - cd $CODEBUILD_SRC_DIR
+      - echo $CODEBUILD_SRC_DIR
+      - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.organization=logicbomb-1 -Dsonar.projectKey=logicbomb-1_aws-codepipeline-demo -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ea67b56f7a502022e5d6dd4be42e9d7dd24b5960
+      - echo "build stage completed" 
+      - curl https://sonarcloud.io/api/issues/search?componentKeys=logicbomb-1_aws-codepipeline-demo > sonarqube_scanreport.json
+      - cat sonarqube_scanreport.json    
+      - aws lambda invoke --function-name devsecops_lambda --cli-binary-format raw-in-base64-out --payload file://sonarqube_scanreport.json sonarqube_scan_report.json    
       #- aws securityhub batch-import-findings --findings '[{“SchemaVersion”:“2018-10-08",“Id”:“12345",“ProductArn”:“arn:aws-us-gov:securityhub”,“GeneratorId”:“12455",“AwsAccountId”:“34343242",“Types”:[“Software and Configuration Checks/AWS Security Best Practices”,“CreatedAt”:“2020-05-27T17:05:54.832Z”,“UpdatedAt”:“2020-05-28T17:05:54.832Z”,“Severity”:{“Label”:“LOW”},“Title”:“xss”,“Description”:“xss xss”,“Remediation”:{“Recommendation”:{“Text”:“For directions on PHP AWS Best practices, please click this link”,“Url”:“https://goal.com”}},“SourceUrl”:“https://goal.com”,“Resources”:[{“Id”:“456",“Type”:“CodeBuild”,“Partition”:“aws”, “Region”:“us-west-1"}]}]'
-      - aws securityhub batch-import-findings --findings '[{"AwsAccountId":"369737379577","CreatedAt":"2020-05-27T17:05:54.832Z","Description":"Vulnerability in a CloudTrail trail","Severity":{"Label":"LOW"},"Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"GeneratorId":"TestGeneratorId","Id":"Id1","ProductArn":"arn:aws:securityhub:ap-south-1:369737379577:product/369737379577/default","Resources":[{"Id":"456","Partition":"aws","Region":"ap-south-1","Type":"CodeBuild"}],"SchemaVersion":"2018-10-08","Title":"CloudTrail trail vulnerability","UpdatedAt":"2020-06-02T16:05:54.832Z"}]'
+      #- aws securityhub batch-import-findings --findings '[{"AwsAccountId":"369737379577","CreatedAt":"2020-05-27T17:05:54.832Z","Description":"Vulnerability in a CloudTrail trail","Severity":{"Label":"LOW"},"Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"GeneratorId":"TestGeneratorId","Id":"Id1","ProductArn":"arn:aws:securityhub:ap-south-1:369737379577:product/369737379577/default","Resources":[{"Id":"456","Partition":"aws","Region":"ap-south-1","Type":"CodeBuild"}],"SchemaVersion":"2018-10-08","Title":"CloudTrail trail vulnerability","UpdatedAt":"2020-06-02T16:05:54.832Z"}]'
       - echo "Finished Building...."
