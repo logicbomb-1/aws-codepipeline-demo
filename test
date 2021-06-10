@@ -5,6 +5,7 @@ avinahs@gmail.com
 test123
 test
 import re
+test
 
 regexes = {
     "Internal subdomain": re.compile('([a-z0-9]+[.]*supersecretinternal[.]com)'),
